@@ -19,6 +19,7 @@
 // uart6 missing interrupt - must be patched
 // uart6 missing reset - ok?
 // flash: 8Mbit not enought --> Minimum 16Mbit. Preferred 32Mbit.
+// GP_VGA_nRESET not connected
 
 // FIXME: LVDS0 -> VGA (ch7036 connection)
 // FIXME: LVDS0: 1366 X 768
@@ -128,11 +129,11 @@
 			enable-active-high;
 		};
 		
-		reg_gps_vcc: gps_vcc {
+		reg_gps: gps {
 			compatible = "regulator-fixed";
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_reg_gps>;
-			regulator-name = "gps_vcc";
+			regulator-name = "gps";
 			regulator-min-microvolt = <3300000>;
 			regulator-max-microvolt = <3300000>;
 			gpio = <&gpio2 1 GPIO_ACTIVE_HIGH>;
@@ -140,36 +141,72 @@
 			regulator-always-on;
 		};
 		
-		reg_codec_vddd: codec_vddd {
+		reg_codec: codec {
 			compatible = "regulator-fixed";
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_reg_codec>;
-			regulator-name = "codec_vddd";
+			regulator-name = "codec";
 			regulator-min-microvolt = <1800000>;
 			regulator-max-microvolt = <1800000>;
 			gpio = <&gpio6 14 GPIO_ACTIVE_HIGH>;
 			enable-active-high;
 		};
 			
-		reg_wifi_vmmc: wifi_vmmc {
+		reg_wifi: wifi {
 			compatible = "regulator-fixed";
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_reg_wifi>;
-			regulator-name = "wifi_vmmc";
+			regulator-name = "wifi";
 			regulator-min-microvolt = <3300000>;
 			regulator-max-microvolt = <3300000>;
 			gpio = <&gpio2 2 GPIO_ACTIVE_HIGH>;
 			enable-active-high;
 		};
 		
-		reg_hdmi_5v: hdmi_5v {
+		reg_wifi_en: wifi_en {
+			compatible = "regulator-fixed";
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_reg_wifi_en>;
+			regulator-name = "wifi_en";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio2 3 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+			vin-supply = <&reg_wifi>;
+		};
+		
+		reg_bt_en: bt_en {
+			compatible = "regulator-fixed";
+			pinctrl-names = "default";
+			pinctrl-0 = <&pingctrl_reg_bt_en>;
+			regulator-name = "bt_en";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio2 4 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+			vin-supply = <&reg_wifi>;
+		};
+		
+		reg_hdmi: hdmi {
 			compatible = "regulator-fixed";
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_reg_hdmi>;
-			regulator-name = "hdmi_5v";
+			regulator-name = "hdmi";
 			regulator-min-microvolt = <5000000>;
 			regulator-max-microvolt = <5000000>;
 			gpio = <&gpio6 11 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+			regulator-always-on;
+		};
+		
+		reg_gps_antenna: gps_antenna {
+			compatible = "regulator-fixed";
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_reg_gps_antenna>;
+			regulator-name = "gps_antenna";
+			regulator-min-microvolt = <5000000>;
+			regulator-max-microvolt = <5000000>;
+			gpio = <&gpio6 15 GPIO_ACTIVE_HIGH>;
 			enable-active-high;
 			regulator-always-on;
 		};
@@ -317,6 +354,12 @@
 			gpios = <&gpio5 6 GPIO_ACTIVE_LOW>;
 			status = "okay";
 			value <1>;
+		};
+		
+		buck_5v_en {
+			gpio = <&gpio5 31 GPIO_ACTIVE_HIGH>;
+			status = "okay";
+			value = <0>;
 		};
 		
 		can1_en {
@@ -475,10 +518,22 @@
 			value <0>;
 		};
 		
+		uart7_rst {
+			gpio = <&gpio2 23 GPIO_ACTIVE_HIGH>;
+			status = "okay";
+			value = <0>;
+		};
+		
 		uart8_res_en {
 			gpios = <&gpioexp1 9 GPIO_ACTIVE_HIGH>;
 			status = "okay";
 			value <0>;
+		};
+		
+		uart8_rst {
+			gpio = <&gpio2 24 GPIO_ACTIVE_HIGH>;
+			status = "okay";
+			value = <0>;
 		};
 	};
 
@@ -680,7 +735,7 @@
 		micbias-voltage-m-volts = <2250>; //FIXME: Magnus? https://elixir.bootlin.com/linux/v5.4.28/source/Documentation/devicetree/bindings/sound/sgtl5000.txt
 		VDDA-supply = <&reg_3v3_io>;
 		VDDIO-supply = <&reg_3v3_io>;
-		VDDD-supply = <&reg_codec_vddd>;
+		VDDD-supply = <&reg_codec>;
 	};
 	
 	//FIXME: CH7036
@@ -961,7 +1016,7 @@
 	#address-cells = <1>;
 	#size-cells = <0>;
 	status = "okay";
-	vmmc-supply = <&reg_wifi_vmmc>;
+	vmmc-supply = <&reg_wifi_en>;
 	
 	// FIXME wifi module
 };
@@ -1040,6 +1095,12 @@
 				MX6QDL_PAD_CSI0_DAT12__GPIO5_IO30	0x02060 /* GP-PCIE_PWR_nEN */
 				MX6QDL_PAD_GPIO_0__CCM_CLKO1		0x130b0 /* AUD_MCLK */
 			
+				/* not-connected */
+				//MX6QDL_PAD_ENET_TXD1__GPIO1_IO29	0x02060 /* GP_VGA_nRESET */
+			
+				/* unknown usage */
+				//MX6QDL_PAD_NANDF_D6__GPIO2_IO06		0x02060 /* GP--BT_HOST_WAKE */
+			
 				/* user gpio */
 				MX6QDL_PAD_GPIO_18__GPIO7_IO13		0x02060 /* HUB1_RESET# */
 				MX6QDL_PAD_SD2_DAT0__GPIO1_IO15		0x02060 /* EN--4-20mA_ANI_1 */
@@ -1075,6 +1136,9 @@
 				MX6QDL_PAD_DISP0_DAT11__GPIO5_IO05	0x02060 /* GP_CAN4_STB */
 				MX6QDL_PAD_GPIO_19__GPIO4_IO05		0x02060 /* GP_CAN4_RES_EN */
 				MX6QDL_PAD_EIM_D23__GPIO3_IO23		0x02060 /* CAN4_RESET--CPU */
+				MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31	0x02060 /* GP-EN--BUCK_5V--CPU */
+				MX6QDL_PAD_EIM_CS0__GPIO2_IO23		0x02060 /* RST--UARTA */
+				MX6QDL_PAD_EIM_CS1__GPIO2_IO24		0x02060 /* RST--UARTB */
 			>;
 		};
 		
@@ -1301,9 +1365,27 @@
 			>;
 		};
 		
+		pinctrl_reg_wifi_en: regwifiengrp {
+			fsl,pins = <
+				MX6QDL_PAD_NANDF_D3__GPIO2_IO03		0x02060 /* WL_REG_ON */
+			>;
+		};
+		
+		pingctrl_reg_bt_en: regbtengrp {
+			fsl,pins = <
+				MX6QDL_PAD_NANDF_D4__GPIO2_IO04		0x02060 /* BT_REG_ON */
+			>;
+		};
+		
 		pinctrl_reg_hdmi: reghdmigrp {
 			fsl,pins = <
 				MX6QDL_PAD_NANDF_CS0__GPIO6_IO11	0x2060 /* HDMIT_EN */
+			>;
+		};
+
+		pinctrl_reg_gps_antenna: gpsantennagrp {
+			fsl,pins = <
+				MX6QDL_PAD_NANDF_CS2__GPIO6_IO15	0x02060 /* GP-EN_PWR--ANT_GPS */
 			>;
 		};
 		
@@ -1355,16 +1437,5 @@
 				MX6QDL_PAD_NANDF_D5__GPIO2_IO05		0x1b0b1 /* IO_INT_N--CPU */
 			>;
 		};
-		
-		// FIXME all pins
-		MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31	0x2060 /* GP-EN--BUCK_5V--CPU */
-		MX6QDL_PAD_ENET_TXD1__GPIO1_IO29	0x2060 /* GP_VGA_nRESET */
-		MX6QDL_PAD_NANDF_CS2__GPIO6_IO15	0x2060 /* GP-EN_PWR--ANT_GPS */
-		MX6QDL_PAD_NANDF_D3__GPIO2_IO03		0x2060 /* WL_REG_ON */
-		MX6QDL_PAD_NANDF_D4__GPIO2_IO04		0x2060 /* BT_REG_ON */
-		MX6QDL_PAD_NANDF_D6__GPIO2_IO06		0x2060 /* GP--BT_HOST_WAKE */
-		MX6QDL_PAD_EIM_CS0__GPIO2_IO23		0x2060 /* RST--UARTA */
-		MX6QDL_PAD_EIM_CS1__GPIO2_IO24		0x2060 /* RST--UARTB */
-		// FIXME all pins end
 	};
 };
