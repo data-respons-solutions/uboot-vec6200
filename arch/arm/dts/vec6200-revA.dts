@@ -32,17 +32,15 @@
 	
 	aliases {
 		serial5 = &uart6;
-		serial6 = &uart7;§
+		serial6 = &uart7;
 		serial7 = &uart8;
 		rtc0 = &smc;
 		rtc1 = &snvs_rtc;
-		mxcfb0 = &mxcfb1;
-		mxcfb1 = &mxcfb2;
 		can2 = &can3;
 		can3 = &can4;
 	};
 	
-	memory: memory {
+	memory: memory@10000000 {
 		reg = <0x10000000 0x80000000>;
 	};
 	
@@ -342,13 +340,13 @@
 		tpm_rst {
 			gpios = <&gpio4 8 GPIO_ACTIVE_LOW>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		flash_wp {
 			gpios = <&gpio5 6 GPIO_ACTIVE_LOW>;
 			status = "okay";
-			value <1>;
+			value = <1>;
 		};
 		
 		buck_5v_en {
@@ -360,19 +358,19 @@
 		can1_en {
 			gpios = <&gpioexp1 12 GPIO_ACTIVE_HIGH>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 
 		can1_wake {
 			gpios = <&gpio4 18 GPIO_ACTIVE_HIGH>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 	
 		can1_stb {
 			gpios = <&gpio1 27 GPIO_ACTIVE_LOW>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		can1_err {
@@ -383,25 +381,25 @@
 		can1_res_en {
 			gpios = <&gpio3 31 GPIO_ACTIVE_HIGH>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		can2_en {
 			gpios = <&gpioexp1 13 GPIO_ACTIVE_HIGH>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		can2_wake {
 			gpios = <&gpio4 19 GPIO_ACTIVE_HIGH>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 	
 		can2_stb {
 			gpios = <&gpio4 10 GPIO_ACTIVE_LOW>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		can2_err {
@@ -412,25 +410,25 @@
 		can2_res_en {
 			gpios = <&gpio1 9 GPIO_ACTIVE_HIGH>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		can3_en {
 			gpios = <&gpioexp1 14 GPIO_ACTIVE_HIGH>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		can3_wake {
 			gpios = <&gpio5 19 GPIO_ACTIVE_HIGH>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 	
 		can3_stb {
 			gpios = <&gpio4 30 GPIO_ACTIVE_LOW>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		can3_err {
@@ -441,31 +439,31 @@
 		can3_res_en {
 			gpios = <&gpio1 30 GPIO_ACTIVE_HIGH>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		can3_rst {
 			gpios = <&gpio4 20 GPIO_ACTIVE_LOW>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		can4_en {
 			gpios = <&gpioexp1 15 GPIO_ACTIVE_HIGH>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		can4_wake {
 			gpios = <&gpio5 18 GPIO_ACTIVE_HIGH>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 	
 		can4_stb {
 			gpios = <&gpio5 5 GPIO_ACTIVE_LOW>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		can4_err {
@@ -476,13 +474,13 @@
 		can4_res_en {
 			gpios = <&gpio4 5 GPIO_ACTIVE_HIGH>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		can4_rst {
 			gpios = <&gpio3 23 GPIO_ACTIVE_LOW>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		odometer {
@@ -498,19 +496,19 @@
 		modem_rst {
 			gpios = <&gpioexp1 6 GPIO_ACTIVE_LOW>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		modem_disable {
 			gpios = <&gpioexp1 7 GPIO_ACTIVE_LOW>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		uart7_res_en {
 			gpios = <&gpioexp1 8 GPIO_ACTIVE_HIGH>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		uart7_rst {
@@ -522,7 +520,7 @@
 		uart8_res_en {
 			gpios = <&gpioexp1 9 GPIO_ACTIVE_HIGH>;
 			status = "okay";
-			value <0>;
+			value = <0>;
 		};
 		
 		uart8_rst {
@@ -586,7 +584,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_pcal6416>;
 		interrupt-parent = <&gpio2>;
-		interrupts = <5, IRQ_TYPE_EDGE_FALLING>;
+		interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
 		reset-gpios = <&gpio2 7 GPIO_ACTIVE_LOW>;
 		interrupt-controller;
 		#interrupt-cells = <2>;
@@ -594,7 +592,7 @@
 		#gpio-cells = <2>;
 	};
 	
-	pmic: pfuze100@08 {
+	pmic: pfuze100@8 {
 		compatible = "fsl,pfuze100";
 		reg = <0x08>;
 		pinctrl-names = "default";
@@ -719,7 +717,7 @@
 		has-rtc;
 	};
 	
-	codec: sgtl5000@0a {
+	codec: sgtl5000@a {
 		compatible = "fsl,sgtl5000";
 		reg = <0x0a>;
 		#sound-dai-cells = <0>;
@@ -736,11 +734,11 @@
 
 &ecspi1 {
 	fsl,cpi-num-chipselects = <3>;
-	cs-gpios = 	<&gpio2 25 GPIO_ACTIVE_LOW>
-				<&gpio3 19 GPIO_ACTIVE_LOW>
+	cs-gpios = 	<&gpio2 25 GPIO_ACTIVE_LOW>,
+				<&gpio3 19 GPIO_ACTIVE_LOW>,
 				<&gpio4 11 GPIO_ACTIVE_LOW>;
 	pinctrl-names = "default";
-	pinctrl-<0> = <&pinctrl_ecspi1>;
+	pinctrl-0 = <&pinctrl_ecspi1>;
 	status = "okay";
 	
 	uart6: max3107@0 {
@@ -771,7 +769,7 @@
 
 &ecspi2 {
 	fsl,spi-num-chipselects = <2>;
-	cs-gpios =	<&gpio5 12 GPIO_ACTIVE_LOW>
+	cs-gpios =	<&gpio5 12 GPIO_ACTIVE_LOW>,
 				<&gpio5 9 GPIO_ACTIVE_LOW>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi2>;
@@ -779,7 +777,6 @@
 
 	flash: sst25vf@0 {
 		#address-cells = <1>;
-		#size-cells = <1>;
 		compatible = "jedec,spi-nor";
 		spi-max-frequency = <20000000>;
 		reg = <0>;
@@ -789,37 +786,37 @@
 			#address-cells = <1>;
 			#size-cells = <1>;
 			
-			spl@0x0 {
+			spl@0 {
 				label = "spl";
 				reg = <0x0 0x30000>;
 			};
 			
-			u-boot@0x30000 {
+			u-boot@30000 {
 				label = "u-boot";
 				reg = <0x30000 0xF0000>;
 			};
 		
-			factory_a@0x120000 {
+			factory_a@120000 {
 				label = "factory_a";
 				reg = <0x120000 0x10000>;
 			};
 			
-			factory_b@0x130000 {
+			factory_b@130000 {
 				label = "factory_b";
 				reg = <0x130000 0x10000>;
 			};
 				
-			user_a@0x140000 {
+			user_a@140000 {
 				label = "user_a";
 				reg = <0x140000 0x10000>;
 			};
 			
-			user_b@0x150000 {
+			user_b@150000 {
 				label = "user_b";
 				reg = <0x150000 0x10000>;
 			};
 			
-			splash@0x200000 {
+			splash@200000 {
 				label = "splash";
 				reg = <0x200000 0x200000>;
 			};
@@ -836,10 +833,10 @@
 
 &ecspi3 {
 	fsl,cpi-num-chipselects = <2>;
-	cs-gpios = 	<&gpio4 24 GPIO_ACTIVE_LOW>
+	cs-gpios = 	<&gpio4 24 GPIO_ACTIVE_LOW>,
 				<&gpio4 25 GPIO_ACTIVE_LOW>;
 	pinctrl-names = "default";
-	pinctrl-<0> = <&pinctrl_ecspi3>;
+	pinctrl-0 = <&pinctrl_ecspi3>;
 	status = "okay";
 	
 	can3: mcp2515@0 {
@@ -861,14 +858,14 @@
 		vdd-supply = <&reg_5v_io>;
 		xceiver-supply = <&reg_5v_io>;
 	};
-}
+};
 
 &ecspi4 {
 	fsl,cpi-num-chipselects = <2>;
-	cs-gpios = 	<&gpio3 20 GPIO_ACTIVE_LOW>
+	cs-gpios = 	<&gpio3 20 GPIO_ACTIVE_LOW>,
 				<&gpio5 2 GPIO_ACTIVE_LOW>;
 	pinctrl-names = "default";
-	pinctrl-<0> = <&pinctrl_ecspi4>;
+	pinctrl-0 = <&pinctrl_ecspi4>;
 	status = "okay";
 	
 	uart7: max3107@0 {
@@ -915,13 +912,13 @@
 	phy-mode = "rgmii";
 	status = "okay";
 	
-	phy-handle = <&enet0-phy>;
+	phy-handle = <&enet0_phy>;
 	
 	mdio {
 		#address-cells = <1>;
 		#size-cells = <0>;
 		
-		enet0-phy: ar8033@0 {
+		enet0_phy: ar8033@0 {
 			compatible = "ethernet-phy-ieee802.3-c22";
 			reg = <0>;
 			max-speed = <1000>;
@@ -1048,7 +1045,7 @@
 
 &hdmi {
 	pinctrl-names = "default";
-	pinctrl-0 <&pinctrl_hdmi>;
+	pinctrl-0 = <&pinctrl_hdmi>;
 	status = "okay";
 };
 
@@ -1424,7 +1421,7 @@
 			>;
 		};
 		
-		pinctrl_pcal6416 : pcal6416grp {
+		pinctrl_pcal6416: pcal6416grp {
 			fsl,pins = <
 				MX6QDL_PAD_NANDF_D7__GPIO2_IO07		0x2060 /* IO_RESET_N_--CPU */
 				MX6QDL_PAD_NANDF_D5__GPIO2_IO05		0x1b0b1 /* IO_INT_N--CPU */
