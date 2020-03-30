@@ -21,8 +21,7 @@
 // flash: 8Mbit not enought --> Minimum 16Mbit. Preferred 32Mbit.
 
 // FIXME: LVDS0 -> VGA (ch7036 connection)
-// FIXME: map gpio from expander
-// FIXME: LEDS
+// FIXME: LVDS0: 1366 X 768
 // FIXME: max3107 has 4 GPIO and can act as gpio controller
 // FIXME: pcie nic eller scanning i OS?
 
@@ -189,6 +188,20 @@
 		};
 	};
 	
+	leds {
+		compatible = "gpio-leds";
+		
+		status-green {
+			label = "status-green";
+			gpios = <&gpioexp1 10 GPIO_ACTIVE_HIGH>;
+		};
+	
+		status-red {
+			label = "status-red";
+			gpios = <&gpioexp1 11 GPIO_ACTIVE_HIGH>;
+		};
+	};
+	
 	user-gpios {	
 		digital_input_1 {
 			gpios = <&gpio1 1 GPIO_ACTIVE_HIGH>;
@@ -306,6 +319,12 @@
 			value <1>;
 		};
 		
+		can1_en {
+			gpios = <&gpioexp1 12 GPIO_ACTIVE_HIGH>;
+			status = "okay";
+			value <0>;
+		};
+
 		can1_wake {
 			gpios = <&gpio4 18 GPIO_ACTIVE_HIGH>;
 			status = "okay";
@@ -313,13 +332,24 @@
 		};
 	
 		can1_stb {
-			gpios = <&gpio1 27 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio1 27 GPIO_ACTIVE_LOW>;
 			status = "okay";
 			value <0>;
 		};
 		
+		can1_err {
+			gpios = <&gpioexp1 2 GPIO_ACTIVE_LOW>;
+			status = "okay";
+		};
+		
 		can1_res_en {
 			gpios = <&gpio3 31 GPIO_ACTIVE_HIGH>;
+			status = "okay";
+			value <0>;
+		};
+		
+		can2_en {
+			gpios = <&gpioexp1 13 GPIO_ACTIVE_HIGH>;
 			status = "okay";
 			value <0>;
 		};
@@ -331,13 +361,24 @@
 		};
 	
 		can2_stb {
-			gpios = <&gpio4 10 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio4 10 GPIO_ACTIVE_LOW>;
 			status = "okay";
 			value <0>;
 		};
 		
+		can2_err {
+			gpios = <&gpioexp1 3 GPIO_ACTIVE_LOW>;
+			status = "okay";
+		};
+		
 		can2_res_en {
 			gpios = <&gpio1 9 GPIO_ACTIVE_HIGH>;
+			status = "okay";
+			value <0>;
+		};
+		
+		can3_en {
+			gpios = <&gpioexp1 14 GPIO_ACTIVE_HIGH>;
 			status = "okay";
 			value <0>;
 		};
@@ -349,9 +390,14 @@
 		};
 	
 		can3_stb {
-			gpios = <&gpio4 30 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio4 30 GPIO_ACTIVE_LOW>;
 			status = "okay";
 			value <0>;
+		};
+		
+		can3_err {
+			gpios = <&gpioexp1 4 GPIO_ACTIVE_LOW>;
+			status = "okay";
 		};
 		
 		can3_res_en {
@@ -366,6 +412,12 @@
 			value <0>;
 		};
 		
+		can4_en {
+			gpios = <&gpioexp1 15 GPIO_ACTIVE_HIGH>;
+			status = "okay";
+			value <0>;
+		};
+		
 		can4_wake {
 			gpios = <&gpio5 18 GPIO_ACTIVE_HIGH>;
 			status = "okay";
@@ -373,9 +425,14 @@
 		};
 	
 		can4_stb {
-			gpios = <&gpio5 5 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio5 5 GPIO_ACTIVE_LOW>;
 			status = "okay";
 			value <0>;
+		};
+		
+		can4_err {
+			gpios = <&gpioexp1 5 GPIO_ACTIVE_LOW>;
+			status = "okay";
 		};
 		
 		can4_res_en {
@@ -386,6 +443,40 @@
 		
 		can4_rst {
 			gpios = <&gpio3 23 GPIO_ACTIVE_LOW>;
+			status = "okay";
+			value <0>;
+		};
+		
+		odometer {
+			gpios = <&gpioexp1 0 GPIO_ACTIVE_HIGH>;
+			status = "okay";
+		};
+		
+		forward {
+			gpios = <&gpioexp1 1 GPIO_ACTIVE_LOW>;
+			status = "okay";
+		};
+		
+		modem_rst {
+			gpios = <&gpioexp1 6 GPIO_ACTIVE_LOW>;
+			status = "okay";
+			value <0>;
+		};
+		
+		modem_disable {
+			gpios = <&gpioexp1 7 GPIO_ACTIVE_LOW>;
+			status = "okay";
+			value <0>;
+		};
+		
+		uart7_res_en {
+			gpios = <&gpioexp1 8 GPIO_ACTIVE_HIGH>;
+			status = "okay";
+			value <0>;
+		};
+		
+		uart8_res_en {
+			gpios = <&gpioexp1 9 GPIO_ACTIVE_HIGH>;
 			status = "okay";
 			value <0>;
 		};
@@ -441,8 +532,7 @@
 	sda-gpios = <&gpio5 26 (GPIO_ACTIVE_LOW|GPIO_OPEN_DRAIN)>;
 	status = "okay";
 
-	//FIXME: map these gpio to user-gpio, how?
-	gpio@20 {
+	gpioexp1: pcal6416@20 {
 		compatible = "nxp,pcal6416";
 		reg = <0x20>;
 		pinctrl-names = "default";
@@ -450,15 +540,10 @@
 		interrupt-parent = <&gpio2>;
 		interrupts = <5, IRQ_TYPE_EDGE_FALLING>;
 		reset-gpios = <&gpio2 7 GPIO_ACTIVE_LOW>;
-		
+		interrupt-controller;
+		#interrupt-cells = <2>;
 		gpio-controller;
-		#gpio-cells = <1>;
-		gpio-line-names = 
-						"ODOMETER--EXTIO", "DIRECTION--EXTIO", 
-						"CAN1_ERR_N", "CAN2_ERR_N", "CAN3_ERR_N", "CAN4_ERR_N",
-						"GP-nPRST_WWAN", "GP-nDISABLE--WWAN", "GP_485A_RES_EN",
-						"GP_485B_RES_EN", "GP-LED_G--STATUS", "GP-LED_R--STATUS",
-						"GP_CAN1_EN", "GP_CAN2_EN", "GP_CAN3_EN", "GP_CAN4_EN";
+		#gpio-cells = <2>;
 	};
 	
 	pmic: pfuze100@08 {
