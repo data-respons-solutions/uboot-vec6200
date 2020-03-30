@@ -82,7 +82,7 @@
 #define DEFAULT_INITRD "/boot/initrd"
 #define DEFAULT_INITRD_SECURE "/boot/initrd-ivt_signed"
 #define DEFAULT_INITRD_ADDR "0x12C00000"
-#define DEFAULT_FDT "/boot/datarespons-vec6200-revA.dtb"
+#define DEFAULT_FDT "/boot/vec6200-revA.dtb"
 #define DEFAULT_FDT_ADDR "0x11000000"
 #define DEFAULT_LOGLEVEL "6"
 #define DEFAULT_CONSOLEBLANK "0"
