@@ -21,11 +21,6 @@
 // flash: 8Mbit not enought --> Minimum 16Mbit. Preferred 32Mbit.
 // GP_VGA_nRESET not connected
 
-// FIXME: LVDS0 -> VGA (ch7036 connection)
-// FIXME: LVDS0: 1366 X 768
-// FIXME: max3107 has 4 GPIO and can act as gpio controller
-// FIXME: pcie nic eller scanning i OS?
-
 / {
     model = "Data Respons Solutions VEC6200 (rev A - dual/quad)";
     compatible = "fsl,imx6q";
@@ -553,15 +548,13 @@
 	
 	ch7036-lvds0 {
 		compatible = "chrontel,ch7036", "panel-lvds";
-		width-mm = <261>;
-		height-mm = <163>;
 		data-mapping = "jeida-24";
-		
+
 		panel-timing {
-			/* 1280x800 @60Hz */
+			/* 1366x768 @60Hz */
 			clock-frequency = <71000000>;
-			hactive = <1280>;
-			vactive = <800>;
+			hactive = <1366>;
+			vactive = <768>;
 			hsync-len = <70>;
 			hfront-porch = <20>;
 			hback-porch = <70>;
