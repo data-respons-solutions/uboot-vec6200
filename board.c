@@ -26,7 +26,26 @@
 
 DECLARE_GLOBAL_DATA_PTR;
 
-static const char* AR8033_NRST_GPIO = "GPIO1_25";
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+
+struct reset_gpio {
+	const char* gpio;
+	const char* name;
+	const ulong flags;
+};
+
+static const struct reset_gpio AR8033_RESET_GPIO =
+	{.gpio = "GPIO1_25", .name = "RGMII--CPU_nRST", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW};
+
+static const struct reset_gpio RESET_GPIOS[] = {
+	{.gpio = "GPIO2_23", .name = "RST--UARTA", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
+	{.gpio = "GPIO2_24", .name = "RST--UARTB", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
+	{.gpio = "GPIO3_23", .name = "CAN4_RESET--CPU", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
+	{.gpio = "GPIO4_20", .name = "CAN3_RESET--CPU", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
+	{.gpio = "GPIO4_8", .name = "GP-nRESET--TPM", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
+	{.gpio = "GPIO7_13", .name = "HUB1_RESET#", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
+	{.gpio = "GPIOEXP1_6", .name = "GP-nPRST_WWAN", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
+};
 
 #if 0     //Available flags
 #define GPIOD_REQUESTED		(1 << 0)	/* Requested/claimed */
@@ -35,23 +54,23 @@ static const char* AR8033_NRST_GPIO = "GPIO1_25";
 #define GPIOD_ACTIVE_LOW	(1 << 3)	/* value has active low */
 #define GPIOD_IS_OUT_ACTIVE	(1 << 4)	/* set output active */
 #endif
-static int request_gpio(struct gpio_desc* desc, const char* name, const char* label, ulong flags)
+static int request_gpio(struct gpio_desc* desc, const struct reset_gpio* rst)
 {
-	int r = dm_gpio_lookup_name(name, desc);
+	int r = dm_gpio_lookup_name(rst->gpio, desc);
 	if (r) {
-		printf("%s: failed finding: %s [%d]: %s\n", __func__, name, -r, errno_str(-r));
+		printf("%s: failed finding: %s [%d]: %s\n", __func__, rst->name, -r, errno_str(-r));
 		return r;
 	}
 
-	r = dm_gpio_request(desc, label);
+	r = dm_gpio_request(desc, rst->name);
 	if (r) {
-		printf("%s: failed requesting: %s [%d]: %s\n", __func__, name, -r, errno_str(-r));
+		printf("%s: failed requesting: %s [%d]: %s\n", __func__, rst->name, -r, errno_str(-r));
 		return r;
 	}
 
-	r = dm_gpio_set_dir_flags(desc, flags);
+	r = dm_gpio_set_dir_flags(desc, rst->flags);
 	if (r) {
-		printf("%s: failed setting flags: %s [%d]: %s\n", __func__, name, -r, errno_str(-r));
+		printf("%s: failed setting flags: %s [%d]: %s\n", __func__, rst->name, -r, errno_str(-r));
 		return r;
 	}
 
@@ -125,7 +144,7 @@ static int ar8033_125M_clk(struct phy_device *phydev)
 int board_phy_config(struct phy_device *phydev)
 {
 	struct gpio_desc ar8033_nrst;
-	if (!request_gpio(&ar8033_nrst, AR8033_NRST_GPIO, "AR8033_NRST", GPIOD_IS_OUT | GPIOD_ACTIVE_LOW)) {
+	if (!request_gpio(&ar8033_nrst, &AR8033_RESET_GPIO)) {
 		set_gpio(&ar8033_nrst, 1);
 		udelay(500);
 		set_gpio(&ar8033_nrst, 0);
@@ -140,10 +159,30 @@ int board_phy_config(struct phy_device *phydev)
 	return 0;
 }
 
+static void reset_all()
+{
+	struct gpio_desc gpios[ARRAY_SIZE(RESET_GPIOS)];
+	for (int i = 0; i < ARRAY_SIZE(RESET_GPIOS); ++i) {
+		if (!request_gpio(&gpios[i], &RESET_GPIOS[i])) {
+			set_gpio(&gpios[i], 1);
+		}
+	}
+
+	udelay(500);
+
+	for (int i = 0; i < ARRAY_SIZE(RESET_GPIOS); ++i) {
+		if (gpios[i].dev) {
+			set_gpio(&gpios[i], 0);
+		}
+	}
+}
+
 int board_init(void)
 {
 	// address of boot parameters
 	gd->bd->bi_boot_params = CONFIG_SYS_SDRAM_BASE + 0x100;
+
+	reset_all();
 
 	return 0;
 }
