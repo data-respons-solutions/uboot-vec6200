@@ -18,13 +18,15 @@
 #include <pwm.h>
 #include <power/pmic.h>
 #include <power/pfuze100_pmic.h>
+#include <miiphy.h>
+#include <netdev.h>
 #include <power/regulator.h>
 #include "vec6200_pins.h"
 #include "vec6200_gpio.h"
 
 DECLARE_GLOBAL_DATA_PTR;
 
-static const char* AR8033_NRST_GPIO "GPIO1_25";
+static const char* AR8033_NRST_GPIO = "GPIO1_25";
 
 #if 0     //Available flags
 #define GPIOD_REQUESTED		(1 << 0)	/* Requested/claimed */
@@ -56,11 +58,11 @@ static int request_gpio(struct gpio_desc* desc, const char* name, const char* la
 	return 0;
 }
 
-static int set_gpio(struct gpio_desc* desc int value)
+static int set_gpio(struct gpio_desc* desc, int value)
 {
 	int r = dm_gpio_set_value(desc, value);
 	if (r) {
-		printf("%s: failed setting value: %s->%d [%d]: %s\n", __func__, desc.dev->name, value, -r, errno_str(-r));
+		printf("%s: failed setting value: %s->%d [%d]: %s\n", __func__, desc->dev->name, value, -r, errno_str(-r));
 		return r;
 	}
 
