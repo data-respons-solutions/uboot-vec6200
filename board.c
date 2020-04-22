@@ -44,7 +44,7 @@ static const struct reset_gpio RESET_GPIOS[] = {
 	{.gpio = "GPIO4_20", .name = "CAN3_RESET--CPU", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
 	{.gpio = "GPIO4_8", .name = "GP-nRESET--TPM", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
 	{.gpio = "GPIO7_13", .name = "HUB1_RESET#", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
-	{.gpio = "GPIOEXP1_6", .name = "GP-nPRST_WWAN", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
+	{.gpio = "GPIO5_30", .name = "GP-PCIE_PWR_nEN", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
 };
 
 #if 0     //Available flags
@@ -58,19 +58,19 @@ static int request_gpio(struct gpio_desc* desc, const struct reset_gpio* rst)
 {
 	int r = dm_gpio_lookup_name(rst->gpio, desc);
 	if (r) {
-		printf("%s: failed finding: %s [%d]: %s\n", __func__, rst->name, -r, errno_str(-r));
+		printf("%s: failed finding: %s [%d]: %s\n", __func__, rst->name, r, errno_str(r));
 		return r;
 	}
 
 	r = dm_gpio_request(desc, rst->name);
 	if (r) {
-		printf("%s: failed requesting: %s [%d]: %s\n", __func__, rst->name, -r, errno_str(-r));
+		printf("%s: failed requesting: %s [%d]: %s\n", __func__, rst->name, r, errno_str(r));
 		return r;
 	}
 
 	r = dm_gpio_set_dir_flags(desc, rst->flags);
 	if (r) {
-		printf("%s: failed setting flags: %s [%d]: %s\n", __func__, rst->name, -r, errno_str(-r));
+		printf("%s: failed setting flags: %s [%d]: %s\n", __func__, rst->name, r, errno_str(r));
 		return r;
 	}
 
@@ -81,7 +81,7 @@ static int set_gpio(struct gpio_desc* desc, int value)
 {
 	int r = dm_gpio_set_value(desc, value);
 	if (r) {
-		printf("%s: failed setting value: %s->%d [%d]: %s\n", __func__, desc->dev->name, value, -r, errno_str(-r));
+		printf("%s: failed setting value: %s->%d [%d]: %s\n", __func__, desc->dev->name, value, r, errno_str(r));
 		return r;
 	}
 
@@ -159,7 +159,7 @@ int board_phy_config(struct phy_device *phydev)
 	return 0;
 }
 
-static void reset_all()
+static void reset_all(void)
 {
 	struct gpio_desc gpios[ARRAY_SIZE(RESET_GPIOS)];
 	for (int i = 0; i < ARRAY_SIZE(RESET_GPIOS); ++i) {
@@ -202,18 +202,18 @@ int power_init_board(void)
 
 	r = pmic_get("pfuze100", &dev);
 	if (r) {
-		printf("pmic: pfuze100: not found [%d]: %s\n", -r, errno_str(-r));
+		printf("pmic: pfuze100: not found [%d]: %s\n", r, errno_str(r));
 		return r;
 	}
 
 	dev_id = pmic_reg_read(dev, PFUZE100_DEVICEID);
 	if (dev_id < 0) {
-		printf("pmic: pfuze100: dev_id [%d]: %s\n", -dev_id, errno_str(-dev_id));
+		printf("pmic: pfuze100: dev_id [%d]: %s\n", dev_id, errno_str(dev_id));
 		return dev_id;
 	}
 	rev_id = pmic_reg_read(dev, PFUZE100_REVID);
 	if (dev_id < 0) {
-		printf("pmic: pfuze100: rev_id [%d]: %s\n", -rev_id, errno_str(-rev_id));
+		printf("pmic: pfuze100: rev_id [%d]: %s\n", rev_id, errno_str(rev_id));
 		return rev_id;
 	}
 	printf("pmic: pfuze100: dev_id: 0x%04x: rev_id: 0x%04x\n", dev_id, rev_id);
@@ -224,7 +224,7 @@ int power_init_board(void)
 		printf("pmic: pfuze100: SW1ABVOL: 1425 mV\n");
 	}
 	else {
-		printf("pmic: pfuze100: SW1ABVOL [%d]: %s\n", -r, errno_str(-r));
+		printf("pmic: pfuze100: SW1ABVOL [%d]: %s\n", r, errno_str(r));
 		return r;
 	}
 
@@ -234,7 +234,7 @@ int power_init_board(void)
 		printf("pmic: pfuze100: SW1CVOL: 1425 mV\n");
 	}
 	else {
-		printf("pmic: pfuze100: SW1CVOL [%d]: %s\n", -r, errno_str(-r));
+		printf("pmic: pfuze100: SW1CVOL [%d]: %s\n", r, errno_str(r));
 		return r;
 	}
 
@@ -244,7 +244,7 @@ int power_init_board(void)
 		printf("pmic: pfuze100: SW3AVOL: 1350 mV\n");
 	}
 	else {
-		printf("pmic: pfuze100: SW3AVOL [%d]: %s\n", -r, errno_str(-r));
+		printf("pmic: pfuze100: SW3AVOL [%d]: %s\n", r, errno_str(r));
 		return r;
 	}
 	r = pmic_reg_write(dev, PFUZE100_SW3BVOL, SW1x_1_350V);
@@ -253,7 +253,7 @@ int power_init_board(void)
 
 	}
 	else {
-		printf("pmic: pfuze100: SW3BVOL [%d]: %s\n", -r, errno_str(-r));
+		printf("pmic: pfuze100: SW3BVOL [%d]: %s\n", r, errno_str(r));
 		return r;
 	}
 
