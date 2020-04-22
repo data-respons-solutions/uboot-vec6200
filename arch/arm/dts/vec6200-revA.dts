@@ -26,7 +26,7 @@
     compatible = "fsl,imx6q";
 	
 	chosen {
-		stdout-path = "serial1:115200n8";
+		stdout-path = "serial0:115200n8";
 		bootargs = "loglevel=6";
 	};
 	
