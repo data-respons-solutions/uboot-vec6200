@@ -231,7 +231,7 @@
 			gpios = <&gpioexp1 11 GPIO_ACTIVE_HIGH>;
 		};
 	};
-	
+
 	user-gpios {	
 		digital_input_1 {
 			gpios = <&gpio1 1 GPIO_ACTIVE_HIGH>;
@@ -543,7 +543,7 @@
 		mux-int-port = <3>;
 		mux-ext-port = <3>;
 	};
-	
+
 	ch7036-lvds0 {
 		compatible = "chrontel,ch7036", "panel-lvds";
 		data-mapping = "jeida-24";
@@ -1404,7 +1404,7 @@
 			>;
 		};
 		
-		pinctrl_pmic: pmiggrp {
+		pinctrl_pmic: pmicgrp {
 			fsl,pins = <
 				MX6QDL_PAD_NANDF_RB0__GPIO6_IO10	0x1b0b1 /* PMIC_INT_B */
 			>;
