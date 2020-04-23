@@ -537,11 +537,13 @@
 		mux-int-port = <3>;
 		mux-ext-port = <3>;
 	};
-
+#if 0
 	ch7036-lvds0 {
 		compatible = "chrontel,ch7036", "panel-lvds";
 		data-mapping = "jeida-24";
 
+		width-mm = <410>; // Mandatory attribute and random googled value
+		height-mm = <230>; // Mandatory attribute and random googled value
 		panel-timing {
 			/* 1366x768 @60Hz */
 			clock-frequency = <76000000>;
@@ -564,6 +566,7 @@
 			};
 		};
 	};
+#endif
 };
 
 &i2c1 {
@@ -1035,7 +1038,7 @@
 	pinctrl-0 = <&pinctrl_hdmi>;
 	status = "okay";
 };
-
+#if 0
 &ldb {
 	status = "okay";
 
@@ -1051,7 +1054,7 @@
 		};
 	};
 };
-
+#endif
 //FIXME: Clocks needed..?
 &clks {
 	assigned-clocks =	<&clks IMX6QDL_CLK_LDB_DI0_SEL>,
