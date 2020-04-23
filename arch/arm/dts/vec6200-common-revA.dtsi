@@ -13,7 +13,7 @@
 
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/input.h>
-#include "imx6q.dtsi"
+
 
 // Issues:
 // uart6 missing interrupt - must be patched
@@ -21,10 +21,7 @@
 // flash: 8Mbit not enought --> Minimum 16Mbit. Preferred 32Mbit.
 // GP_VGA_nRESET not connected
 
-/ {
-    model = "Data Respons Solutions VEC6200 (rev A - dual/quad)";
-    compatible = "fsl,imx6q";
-	
+/ {	
 	chosen {
 		stdout-path = "serial0:115200n8";
 		bootargs = "loglevel=6";
@@ -1009,11 +1006,6 @@
 	// FIXME wifi module
 };
 
-&cpu0 {
-	arm-supply = <&reg_arm>;
-	soc-supply = <&reg_soc>;
-};
-
 &gpc {
 	fsl,ldo-bypass = <0>;
 	fsl,wdog-reset = <1>;
@@ -1093,7 +1085,7 @@
 				MX6QDL_PAD_GPIO_18__GPIO7_IO13		0x02060 /* HUB1_RESET# */
 				MX6QDL_PAD_SD2_DAT0__GPIO1_IO15		0x02060 /* EN--4-20mA_ANI_1 */
 				// FIXME: imx_pinctrl_set_state() never returns if below pin defined 
-				//MX6QDL_PAD_SD2_DAT1__GPIO1_IO14		0x02060 /* EN--4-20mA_ANI_2 */
+				MX6QDL_PAD_SD2_DAT1__GPIO1_IO14		0x02060 /* EN--4-20mA_ANI_2 */
 				MX6QDL_PAD_SD2_DAT2__GPIO1_IO13		0x02060 /* EN--4-20mA_ANI_3 */
 				MX6QDL_PAD_SD2_DAT3__GPIO1_IO12		0x02060 /* EN--4-20mA_ANI_4 */
 				MX6QDL_PAD_GPIO_1__GPIO1_IO01		0x1b0b1 /* GPI_1--PCA */
