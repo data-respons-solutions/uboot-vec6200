@@ -791,37 +791,32 @@
 			
 			spl@0 {
 				label = "spl";
-				reg = <0x0 0x30000>;
+				reg = <0x0 0x20000>;
 			};
 			
-			u-boot@30000 {
+			u-boot@20000 {
 				label = "u-boot";
-				reg = <0x30000 0xF0000>;
+				reg = <0x20000 0x90000>;
 			};
 		
-			factory_a@120000 {
+			system_a@B0000 {
 				label = "factory_a";
-				reg = <0x120000 0x10000>;
+				reg = <0xB0000 0x10000>;
 			};
 			
-			factory_b@130000 {
+			system_b@C0000 {
 				label = "factory_b";
-				reg = <0x130000 0x10000>;
+				reg = <0xC0000 0x10000>;
 			};
 				
-			user_a@140000 {
+			user_a@D0000 {
 				label = "user_a";
-				reg = <0x140000 0x10000>;
+				reg = <0xD0000 0x10000>;
 			};
 			
-			user_b@150000 {
+			user_b@E0000 {
 				label = "user_b";
-				reg = <0x150000 0x10000>;
-			};
-			
-			splash@200000 {
-				label = "splash";
-				reg = <0x200000 0x200000>;
+				reg = <0xE0000 0x10000>;
 			};
 		};
 	};
