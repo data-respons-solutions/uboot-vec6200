@@ -723,7 +723,7 @@
 		#sound-dai-cells = <0>;
 		clocks = <&clks IMX6QDL_CLK_CKO1>;
 		micbias-resistor-k-ohms = <2>;
-		micbias-voltage-m-volts = <2250>; //FIXME: Magnus? https://elixir.bootlin.com/linux/v5.4.28/source/Documentation/devicetree/bindings/sound/sgtl5000.txt
+		micbias-voltage-m-volts = <1250>;
 		VDDA-supply = <&reg_3v3_io>;
 		VDDIO-supply = <&reg_3v3_io>;
 		VDDD-supply = <&reg_codec>;
@@ -744,6 +744,7 @@
 	uart6: max3107@0 {
 		compatible = "maxim,max3107";
 		reg = <0>;
+		spi-max-frequency = <26000000>;
 		clocks = <&uart6_clk>;
 		clock-names = "osc";
 		//interrupt-parent = <&gpio3>; //FIXME: NO IRQ
@@ -778,7 +779,7 @@
 	flash: sst25vf@0 {
 		#address-cells = <1>;
 		compatible = "jedec,spi-nor";
-		spi-max-frequency = <20000000>;
+		spi-max-frequency = <25000000>;
 		reg = <0>;
 		
 		partitions {
@@ -836,6 +837,7 @@
 	
 	can3: mcp2515@0 {
 		compatible = "microchip,mcp2515";
+		spi-max-frequency = <10000000>;
 		reg = <0>;
 		clocks = <&can3_clk>;
 		interrupt-parent = <&gpio3>;
@@ -846,6 +848,7 @@
 	
 	can4: mcp2515@1 {
 		compatible = "microchip,mcp2515";
+		spi-max-frequency = <10000000>;
 		reg = <1>;
 		clocks = <&can4_clk>;
 		interrupt-parent = <&gpio3>;
@@ -866,6 +869,7 @@
 	uart7: max3107@0 {
 		compatible = "maxim,max3107";
 		reg = <0>;
+		spi-max-frequency = <26000000>;
 		clocks = <&uart7_clk>;
 		clock-names = "osc";
 		interrupt-parent = <&gpio1>;
@@ -875,6 +879,7 @@
 	uart8: max3107@1 {
 		compatible = "maxim,max3107";
 		reg = <1>;
+		spi-max-frequency = <26000000>;
 		clocks = <&uart8_clk>;
 		clock-names = "osc";
 		interrupt-parent = <&gpio1>;
