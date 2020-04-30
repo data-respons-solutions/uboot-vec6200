@@ -195,6 +195,9 @@ int board_init(void)
 
 int power_init_board(void)
 {
+	printf("%s: SKIP -- PMIC VDDIO WRONG VOLTAGE -- \n", __func__);
+	return 0;
+
 	struct udevice *dev = NULL;
 	int r = 0;
 	int dev_id = 0;
