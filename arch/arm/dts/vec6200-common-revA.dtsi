@@ -798,12 +798,12 @@
 			};
 		
 			system_a@B0000 {
-				label = "factory_a";
+				label = "system_a";
 				reg = <0xB0000 0x10000>;
 			};
 			
 			system_b@C0000 {
-				label = "factory_b";
+				label = "system_b";
 				reg = <0xC0000 0x10000>;
 			};
 				
