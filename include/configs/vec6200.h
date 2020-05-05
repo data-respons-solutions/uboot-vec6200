@@ -21,7 +21,7 @@
 #if 0
 #ifndef CONFIG_SPL_BUILD
 #define DEBUG
-#define CONFIG_BOOT_RETRY_TIME -1 /* disable shell timeout */
+//#define CONFIG_BOOT_RETRY_TIME -1 /* disable shell timeout */
 #endif
 #endif
 
@@ -35,9 +35,6 @@
 #undef CONFIG_DM_SPI
 #undef CONFIG_DM_SPI_FLASH
 #undef CONFIG_SPI_FLASH_MTD
-
-/* offset of u-boot binary on SPI NOR */
-#define CONFIG_SYS_SPI_U_BOOT_OFFS	0x30000
 
 /* Define console UART until migrate to DM */
 #define CONFIG_MXC_UART_BASE	UART1_BASE
@@ -58,7 +55,6 @@
 /* environment */
 #define CONFIG_LOADADDR			0x12000000
 #define CONFIG_SYS_LOAD_ADDR	CONFIG_LOADADDR
-#define CONFIG_ENV_SIZE			0x10000
 #define CONFIG_SYS_MALLOC_LEN	(40 * SZ_1M)
 
 /* uboot shell */
