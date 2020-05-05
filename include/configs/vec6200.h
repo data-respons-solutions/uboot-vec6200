@@ -11,7 +11,7 @@
 #define str(a) #a
 
 /* Debug for SPL */
-#if 1
+#if 0
 #ifdef CONFIG_SPL_BUILD
 #define DEBUG
 #endif
@@ -21,7 +21,7 @@
 #if 0
 #ifndef CONFIG_SPL_BUILD
 #define DEBUG
-#define CONFIG_BOOT_RETRY_TIME -1 /* disable shell timeout */
+//#define CONFIG_BOOT_RETRY_TIME -1 /* disable shell timeout */
 #endif
 #endif
 
