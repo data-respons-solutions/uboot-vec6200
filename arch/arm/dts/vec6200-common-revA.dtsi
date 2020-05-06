@@ -358,7 +358,7 @@
 		};
 		
 		buck_5v_en {
-			gpio = <&gpio5 31 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio5 31 GPIO_ACTIVE_HIGH>;
 			status = "okay";
 			value = <0>;
 		};
@@ -520,7 +520,7 @@
 		};
 		
 		uart7_rst {
-			gpio = <&gpio2 23 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio2 23 GPIO_ACTIVE_HIGH>;
 			status = "okay";
 			value = <0>;
 		};
@@ -532,7 +532,7 @@
 		};
 		
 		uart8_rst {
-			gpio = <&gpio2 24 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio2 24 GPIO_ACTIVE_HIGH>;
 			status = "okay";
 			value = <0>;
 		};
