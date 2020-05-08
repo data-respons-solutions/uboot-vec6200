@@ -735,7 +735,7 @@
 		compatible = "fsl,sgtl5000";
 		reg = <0x0a>;
 		#sound-dai-cells = <0>;
-		clocks = <&clks IMX6QDL_CLK_CKO1>;
+		clocks = <&clks IMX6QDL_CLK_CKO>;
 		micbias-resistor-k-ohms = <2>;
 		micbias-voltage-m-volts = <1250>;
 		VDDA-supply = <&reg_3v3_io>;
