@@ -541,14 +541,14 @@
 	sound-sgtl5000 {
 		compatible = "fsl,imx-audio-sgtl5000";
 		model = "sgtl5000";
-		ssi-controller = <&ssi3>;
+		ssi-controller = <&ssi1>;
 		audio-codec = <&codec>;
 		audio-routing =
 			"MIC_IN", "Mic Jack",
 			"Mic Jack", "Mic Bias",
 			"Line Out Jack", "LINE_OUT",
 			"LINE_IN", "Line In Jack";
-		mux-int-port = <3>;
+		mux-int-port = <1>;
 		mux-ext-port = <3>;
 	};
 #if 0
@@ -1042,7 +1042,7 @@
 	status = "okay";
 };
 
-&ssi3 {
+&ssi1 {
 	status = "okay";
 };
 
