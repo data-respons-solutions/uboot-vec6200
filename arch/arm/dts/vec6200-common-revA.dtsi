@@ -935,7 +935,7 @@
 		enet0_phy: ar8033@0 {
 			compatible = "ethernet-phy-ieee802.3-c22";
 			reg = <0>;
-			max-speed = <1000>;
+			max-speed = <100>;
 			interrupt-parent = <&gpio1>;
 			interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
 		};
