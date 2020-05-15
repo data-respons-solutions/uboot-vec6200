@@ -520,7 +520,7 @@
 		};
 		
 		uart7_rst {
-			gpios = <&gpio2 23 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio2 23 GPIO_ACTIVE_LOW>;
 			status = "okay";
 			value = <0>;
 		};
@@ -532,7 +532,7 @@
 		};
 		
 		uart8_rst {
-			gpios = <&gpio2 24 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio2 24 GPIO_ACTIVE_LOW>;
 			status = "okay";
 			value = <0>;
 		};
