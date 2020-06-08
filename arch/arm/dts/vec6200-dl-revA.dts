@@ -19,21 +19,4 @@
 / {
     model = "Data Respons Solutions VEC6200 (rev A - DualLite)";
     compatible = "fsl,imx6dl";
-    
-    cpus {
-    	/delete-node/ cpu@1;
-    };
-};
-
-&cpu0 {
-	operating-points = <
-		/* kHz    uV */
-		792000  1175000
-		396000  1150000
-	>;
-	fsl,soc-operating-points = <
-		/* ARM kHz  SOC-PU uV */
-		792000	1175000
-		396000	1175000
-	>;
 };
