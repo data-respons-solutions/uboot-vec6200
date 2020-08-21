@@ -1,0 +1,22 @@
+/*
+ * Copyright 2020 Data Respons Solutions AB
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/dts-v1/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
+#include "imx6q.dtsi"
+#include "vec6200-common-revB.dtsi"
+
+/ {
+    model = "Data Respons Solutions VEC6200 (rev B - Quad)";
+    compatible = "fsl,imx6q";
+};
