@@ -465,12 +465,6 @@
 			value = <0>;
 		};
 		
-		uart6_rst {
-			gpios = <&gpio6 31 GPIO_ACTIVE_LOW>;
-			status = "okay";
-			value = <0>;
-		};
-		
 		uart7_res_en {
 			gpios = <&uart7 1 GPIO_ACTIVE_HIGH>;
 			status = "okay";
@@ -483,12 +477,6 @@
 			value = <0>;
 		};
 		
-		uart7_rst {
-			gpios = <&gpio2 23 GPIO_ACTIVE_LOW>;
-			status = "okay";
-			value = <0>;
-		};
-		
 		uart8_res_en {
 			gpios = <&uart8 1 GPIO_ACTIVE_HIGH>;
 			status = "okay";
@@ -497,18 +485,6 @@
 		
 		uart8_j1708 {
 			gpios = <&uart8 0 GPIO_ACTIVE_HIGH>;
-			status = "okay";
-			value = <0>;
-		};
-		
-		uart8_rst {
-			gpios = <&gpio2 24 GPIO_ACTIVE_LOW>;
-			status = "okay";
-			value = <0>;
-		};
-		
-		ch7036_rst {
-			gpios = <&gpio1 29 GPIO_ACTIVE_LOW>;
 			status = "okay";
 			value = <0>;
 		};
@@ -577,6 +553,37 @@
 	};
 #endif
 };
+
+&gpio1 {
+	ch7036_rst {
+		gpio-hog;
+		gpios = <29 GPIO_ACTIVE_LOW>;
+		output-low;
+	};
+};
+
+&gpio2 {
+	uart7_rst {
+		gpio-hog;
+		gpios = <23 GPIO_ACTIVE_LOW>;
+		output-low;
+	};
+	
+	uart8_rst {
+		gpio-hog;
+		gpios = <24 GPIO_ACTIVE_LOW>;
+		output-low;
+	};
+};
+
+&gpio6 {
+	uart6_rst {
+		gpio-hog;
+		gpios = <31 GPIO_ACTIVE_LOW>;
+		output-low;
+	};
+};
+
 
 &i2c1 {
 	clock-frequency = <100000>;
