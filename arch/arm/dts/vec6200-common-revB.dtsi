@@ -775,9 +775,9 @@
 		clocks = <&uart6_clk>;
 		clock-names = "osc";
 		interrupt-parent = <&gpio7>;
-		interrupts = <13 IRQ_TYPE_LEVEL_LOW>;
+		interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
 	};
-	
+
 	imu: lsm6dsm@1 {
 		reg = <1>;
 		compatible = "st,lsm6dsm";
