@@ -761,14 +761,13 @@
 };
 
 &ecspi1 {
-	fsl,cpi-num-chipselects = <3>;
 	cs-gpios = 	<&gpio2 25 GPIO_ACTIVE_LOW>,
 				<&gpio3 19 GPIO_ACTIVE_LOW>,
 				<&gpio4 11 GPIO_ACTIVE_LOW>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi1>;
 	status = "okay";
-	
+
 	uart6: max3107@0 {
 		compatible = "maxim,max3107";
 		reg = <0>;
@@ -797,7 +796,9 @@
 };
 
 &ecspi3 {
-	fsl,spi-num-chipselects = <2>;
+	cs-gpios =
+		<&gpio4 24 GPIO_ACTIVE_LOW>,
+		<&gpio4 25 GPIO_ACTIVE_LOW>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi3>;
 	status = "okay";
@@ -854,7 +855,9 @@
 };
 
 &ecspi4 {
-	fsl,cpi-num-chipselects = <2>;
+	cs-gpios =
+		<&gpio3 20 GPIO_ACTIVE_LOW>,
+		<&gpio5 2 GPIO_ACTIVE_LOW>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi4>;
 	status = "okay";
@@ -1215,8 +1218,8 @@
 				MX6QDL_PAD_DISP0_DAT0__ECSPI3_SCLK	0x000100b1
 				MX6QDL_PAD_DISP0_DAT2__ECSPI3_MISO	0x000100b1
 				MX6QDL_PAD_DISP0_DAT1__ECSPI3_MOSI	0x000100b1
-				MX6QDL_PAD_DISP0_DAT3__ECSPI3_SS0	0x000100b1 /* SPI3_SS0--CPU */
-				MX6QDL_PAD_DISP0_DAT4__ECSPI3_SS1	0x000100b1 /* SPI3_SS1--CPU */
+				MX6QDL_PAD_DISP0_DAT3__GPIO4_IO24	0x000100b1 /* SPI3_SS0--CPU */
+				MX6QDL_PAD_DISP0_DAT4__GPIO4_IO25	0x000100b1 /* SPI3_SS1--CPU */
 
 			>;
 		};
@@ -1226,9 +1229,9 @@
 				MX6QDL_PAD_EIM_D21__ECSPI4_SCLK		0x000100b1
 				MX6QDL_PAD_EIM_D22__ECSPI4_MISO		0x000100b1
 				MX6QDL_PAD_EIM_D28__ECSPI4_MOSI		0x000100b1
-				MX6QDL_PAD_EIM_D20__ECSPI4_SS0		0x000100b1 /* SPI4_SS0--CPU */
+				MX6QDL_PAD_EIM_D20__GPIO3_IO20		0x000100b1 /* SPI4_SS0--CPU */
 				MX6QDL_PAD_SD2_CMD__GPIO1_IO11		0x0001b0b1 /* IRQ--UARTA--CPU */
-				MX6QDL_PAD_EIM_A25__ECSPI4_SS1		0x000100b1 /* SPI4_SS1--CPU */
+				MX6QDL_PAD_EIM_A25__GPIO5_IO02		0x000100b1 /* SPI4_SS1--CPU */
 				MX6QDL_PAD_SD2_CLK__GPIO1_IO10		0x0001b0b1 /* IRQ--UARTB--CPU */
 			>;
 		};
