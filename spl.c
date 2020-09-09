@@ -229,7 +229,7 @@ static void ccgr_init(void)
 	writel(0x3FF00000, &ccm->CCGR3);
 	writel(0x00FFF300, &ccm->CCGR4);
 	writel(0x0F0000C3, &ccm->CCGR5);
-	writel(0x00000339, &ccm->CCGR6);
+	writel(0x000003CD, &ccm->CCGR6);
 }
 
 static void spl_dram_init(void)
