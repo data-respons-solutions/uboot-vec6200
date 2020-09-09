@@ -367,12 +367,6 @@
         	value = <0>;
 		};
 		
-		tpm_rst {
-			gpios = <&gpio4 8 GPIO_ACTIVE_LOW>;
-			status = "okay";
-			value = <0>;
-		};
-		
 		flash_wp {
 			gpios = <&gpio5 5 GPIO_ACTIVE_LOW>;
 			status = "okay";
@@ -576,6 +570,14 @@
 	};
 };
 
+&gpio4 {
+	tpm_rst {
+		gpio-hog;
+		gpios = <8 GPIO_ACTIVE_LOW>;
+		output-low;
+	};
+};
+
 &gpio6 {
 	uart6_rst {
 		gpio-hog;
@@ -583,7 +585,6 @@
 		output-low;
 	};
 };
-
 
 &i2c1 {
 	clock-frequency = <100000>;
