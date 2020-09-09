@@ -40,11 +40,11 @@ static const struct reset_gpio AR8033_RESET_GPIO =
 static const struct reset_gpio RESET_GPIOS[] = {
 	{.gpio = "GPIO2_23", .name = "RST--UARTA", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
 	{.gpio = "GPIO2_24", .name = "RST--UARTB", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
-	{.gpio = "GPIO3_23", .name = "CAN4_RESET--CPU", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
-	{.gpio = "GPIO4_20", .name = "CAN3_RESET--CPU", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
 	{.gpio = "GPIO4_8", .name = "GP-nRESET--TPM", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
-	{.gpio = "GPIO7_13", .name = "HUB1_RESET#", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
+	{.gpio = "GPIO4_16", .name = "HUB1_RESET#", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
 	{.gpio = "GPIO5_30", .name = "GP-PCIE_PWR_nEN", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
+	{.gpio = "GPIO6_31", .name = "RST--UART", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
+	{.gpio = "GPIO1_29", .name = "GP_VGA_nRESET", .flags = GPIOD_IS_OUT | GPIOD_ACTIVE_LOW},
 };
 
 #if 0     //Available flags
