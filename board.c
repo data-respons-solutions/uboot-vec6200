@@ -21,8 +21,6 @@
 #include <miiphy.h>
 #include <netdev.h>
 #include <power/regulator.h>
-#include "vec6200_pins.h"
-#include "vec6200_gpio.h"
 
 DECLARE_GLOBAL_DATA_PTR;
 

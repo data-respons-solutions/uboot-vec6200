@@ -13,19 +13,37 @@
 #include <asm/arch/crm_regs.h>
 #include <asm/io.h>
 #include <asm/arch/sys_proto.h>
+#include <asm/gpio.h>
 #include <version.h>
 #include <watchdog.h>
 #include <asm/arch/mx6-ddr.h>
 #include <spl.h>
 #include <asm/mach-imx/hab.h>
-#include "vec6200_pins.h"
-#include "vec6200_gpio.h"
+#include <asm/arch/mx6-pins.h>
+#include <asm/arch/iomux.h>
+#include <asm/mach-imx/iomux-v3.h>
+#include <asm/mach-imx/mxc_i2c.h>
+#include "../common/include/mx6_common_defs.h"
+
+#define SPI_NOR_CS IMX_GPIO_NR(4, 24)
+
+static iomux_v3_cfg_t const console_pads[] = {
+	IOMUX_PADS(PAD_CSI0_DAT10__UART1_TX_DATA | MUX_PAD_CTRL(UART_PAD_CTRL)),
+	IOMUX_PADS(PAD_CSI0_DAT11__UART1_RX_DATA | MUX_PAD_CTRL(UART_PAD_CTRL)),
+};
+
+static iomux_v3_cfg_t const spi_nor_pads[] = {
+	IOMUX_PADS(PAD_DISP0_DAT0__ECSPI3_SCLK | MUX_PAD_CTRL(SPI_PAD_CTRL)),
+	IOMUX_PADS(PAD_DISP0_DAT2__ECSPI3_MISO | MUX_PAD_CTRL(SPI_PAD_CTRL)),
+	IOMUX_PADS(PAD_DISP0_DAT1__ECSPI3_MOSI | MUX_PAD_CTRL(SPI_PAD_CTRL)),
+	IOMUX_PADS(PAD_DISP0_DAT3__GPIO4_IO24 | MUX_PAD_CTRL(SPI_PAD_CTRL)), // CS
+};
 
 DECLARE_GLOBAL_DATA_PTR;
 
 int board_spi_cs_gpio(unsigned bus, unsigned cs)
 {
-	if (bus == 1 && cs == 0) {
+	if (bus == 2 && cs == 0) {
 		return SPI_NOR_CS;
 	}
 
