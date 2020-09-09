@@ -119,15 +119,21 @@ int dram_init(void)
 
 static int ar8033_125M_clk(struct phy_device *phydev)
 {
-	unsigned short val = 0;
+	struct gpio_desc ar8033_nrst;
+	int r = request_gpio(&ar8033_nrst, &AR8033_RESET_GPIO);
+	if (r) {
+		return r;
+	}
+	set_gpio(&ar8033_nrst, 1);
+	udelay(500);
+	set_gpio(&ar8033_nrst, 0);
 
 	printf("%s: Setting enet ref clock to 125 MHz\n", __func__);
 	/* To enable AR8031 ouput a 125MHz clk from CLK_25M */
 	phy_write(phydev, MDIO_DEVAD_NONE, 0xd, 0x7);
 	phy_write(phydev, MDIO_DEVAD_NONE, 0xe, 0x8016);
 	phy_write(phydev, MDIO_DEVAD_NONE, 0xd, 0x4007);
-
-	val = phy_read(phydev, MDIO_DEVAD_NONE, 0xe);
+	unsigned short val = phy_read(phydev, MDIO_DEVAD_NONE, 0xe);
 	val &= 0xffe3;
 	val |= 0x18;
 	phy_write(phydev, MDIO_DEVAD_NONE, 0xe, val);
@@ -143,14 +149,10 @@ static int ar8033_125M_clk(struct phy_device *phydev)
 
 int board_phy_config(struct phy_device *phydev)
 {
-	struct gpio_desc ar8033_nrst;
-	if (!request_gpio(&ar8033_nrst, &AR8033_RESET_GPIO)) {
-		set_gpio(&ar8033_nrst, 1);
-		udelay(500);
-		set_gpio(&ar8033_nrst, 0);
+	int r = ar8033_125M_clk(phydev);
+	if (r) {
+		return r;
 	}
-
-	ar8033_125M_clk(phydev);
 
 	if (phydev->drv->config) {
 		phydev->drv->config(phydev);
