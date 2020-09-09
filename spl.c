@@ -206,8 +206,8 @@ static void ccgr_init(void)
 	struct mxc_ccm_reg *ccm = (struct mxc_ccm_reg *)CCM_BASE_ADDR;
 
 	writel(0x00C03F3F, &ccm->CCGR0);
-	writel(0x0030FF0F, &ccm->CCGR1);
-	writel(0x0FFFC000, &ccm->CCGR2);
+	writel(0x0030FF7F, &ccm->CCGR1);
+	writel(0x0FFFCFC0, &ccm->CCGR2);
 	writel(0x3FF00000, &ccm->CCGR3);
 	writel(0x00FFF300, &ccm->CCGR4);
 	writel(0x0F0000C3, &ccm->CCGR5);
