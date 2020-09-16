@@ -786,8 +786,10 @@
 		reg = <2>;
 		compatible = "tcg,tpm_tis-spi";
 		spi-max-frequency = <10000000>;
-		interrupt-parent = <&gpio5>;
-		interrupts = <8 IRQ_TYPE_EDGE_FALLING>;
+		// Enabling interrupt gives kernel output:
+		// [Firmware Bug]: TPM interrupt not working, polling instead
+		//interrupt-parent = <&gpio5>;
+		//interrupts = <8 IRQ_TYPE_EDGE_FALLING>;
 	};
 };
 
