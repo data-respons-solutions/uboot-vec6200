@@ -119,6 +119,18 @@
 			enable-active-high;
 		};
 		
+		reg_modem: modem {
+			compatible = "regulator-fixed";
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_reg_modem>;
+			regulator-name = "modem";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio5 30 GPIO_ACTIVE_LOW>;
+			enable-active-low;
+			regulator-always-on;
+		};
+		
 		reg_gps: gps {
 			compatible = "regulator-fixed";
 			pinctrl-names = "default";
@@ -164,30 +176,6 @@
 			enable-active-high;
 		};
 		
-		reg_wifi_en: wifi_en {
-			compatible = "regulator-fixed";
-			pinctrl-names = "default";
-			pinctrl-0 = <&pinctrl_reg_wifi_en>;
-			regulator-name = "wifi_en";
-			regulator-min-microvolt = <3300000>;
-			regulator-max-microvolt = <3300000>;
-			gpio = <&gpio2 3 GPIO_ACTIVE_HIGH>;
-			enable-active-high;
-			vin-supply = <&reg_wifi>;
-		};
-		
-		reg_bt_en: bt_en {
-			compatible = "regulator-fixed";
-			pinctrl-names = "default";
-			pinctrl-0 = <&pingctrl_reg_bt_en>;
-			regulator-name = "bt_en";
-			regulator-min-microvolt = <3300000>;
-			regulator-max-microvolt = <3300000>;
-			gpio = <&gpio2 4 GPIO_ACTIVE_HIGH>;
-			enable-active-high;
-			vin-supply = <&reg_wifi>;
-		};
-		
 		reg_hdmi: hdmi {
 			compatible = "regulator-fixed";
 			pinctrl-names = "default";
@@ -211,6 +199,13 @@
 			enable-active-high;
 			regulator-always-on;
 		};
+	};
+	
+	usdhc4_pwrseq: usdhc4_pwrseq {
+		compatible = "mmc-pwrseq-simple";
+		reset-gpios =
+			<&gpio2 3 GPIO_ACTIVE_LOW>,
+			<&gpio2 4 GPIO_ACTIVE_LOW>;
 	};
 	
 	gpio-keys {
@@ -452,7 +447,7 @@
 			status = "okay";
 			value = <0>;
 		};
-		
+
 		modem_disable {
 			gpios = <&gpioexp1 7 GPIO_ACTIVE_LOW>;
 			status = "okay";
@@ -889,7 +884,7 @@
 };
 
 &pcie {
-	reset-gpio = <&gpio5 30 GPIO_ACTIVE_LOW>;
+	reset-gpio = <&gpio7 12 GPIO_ACTIVE_LOW>;
 	status = "okay";
 };
 
@@ -1007,9 +1002,13 @@
 	#address-cells = <1>;
 	#size-cells = <0>;
 	status = "okay";
-	vmmc-supply = <&reg_wifi_en>;
+	vmmc-supply = <&reg_wifi>;
+	mmc-pwrseq = <&usdhc4_pwrseq>;
 	
-	// FIXME wifi module
+	wifi: wifi@1 {
+		compatible = "marvell,sd8997";
+		reg = <1>;
+	};
 };
 
 &gpc {
@@ -1122,9 +1121,9 @@
 			fsl,pins = <
 				/* pins not captured by driver */
 				MX6QDL_PAD_DISP0_DAT15__GPIO5_IO09	0x1b0b1 /* GPO-nINT--MCU */
-				MX6QDL_PAD_CSI0_DAT12__GPIO5_IO30	0x02060 /* GP-PCIE_PWR_nEN */
 				MX6QDL_PAD_GPIO_0__CCM_CLKO1		0x130b0 /* AUD_MCLK */
 				MX6QDL_PAD_NANDF_CS2__CCM_CLKO2		0x130b0 /* AUD4_MCLK */
+				MX6QDL_PAD_GPIO_17__GPIO7_IO12		0x2060 /* PCIE_RST# */
 			
 				/* not-connected */
 				//MX6QDL_PAD_ENET_TXD1__GPIO1_IO29	0x02060 /* GP_VGA_nRESET */
@@ -1313,6 +1312,8 @@
 				MX6QDL_PAD_SD4_DAT1__SD4_DATA1	0x17059
 				MX6QDL_PAD_SD4_DAT2__SD4_DATA2	0x17059
 				MX6QDL_PAD_SD4_DAT3__SD4_DATA3	0x17059
+				MX6QDL_PAD_NANDF_D3__GPIO2_IO03	0x02060 /* WL_REG_ON */
+				MX6QDL_PAD_NANDF_D4__GPIO2_IO04	0x02060 /* BT_REG_ON */
 			>;
 		};
 		
@@ -1345,13 +1346,7 @@
 				MX6QDL_PAD_KEY_ROW1__GPIO4_IO09		0x1b0b0 /* USB_OTG_OC - active low */
 			>;
 		};
-		
-		pinctrl_pcie: pciegrp {
-			fsl,pins = <
-				MX6QDL_PAD_GPIO_17__GPIO7_IO12		0x2060 /* PCIE_RST# */
-			>;
-		};
-		
+
 		pinctrl_reg_usb1: regusb1grp {
 			fsl,pins = <
 				MX6QDL_PAD_NANDF_D0__GPIO2_IO00		0x2060 /* USB_HUB_EN */
@@ -1367,6 +1362,12 @@
 		pinctrl_reg_usbotg: regusbotggrp {
 			fsl,pins = <
 				MX6QDL_PAD_EIM_D30__GPIO3_IO30		0x2060 /* USB_OTG_PWR_EN */
+			>;
+		};
+		
+		pinctrl_reg_modem: regmodemgrp {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_DAT12__GPIO5_IO30	0x02060 /* GP-PCIE_PWR_nEN */
 			>;
 		};
 		
@@ -1391,18 +1392,6 @@
 		pinctrl_reg_wifi:  regwifigrp {
 			fsl,pins = <
 				MX6QDL_PAD_NANDF_D2__GPIO2_IO02		0x2060 /* GP-WIFI_PWR_nEN */
-			>;
-		};
-		
-		pinctrl_reg_wifi_en: regwifiengrp {
-			fsl,pins = <
-				MX6QDL_PAD_NANDF_D3__GPIO2_IO03		0x02060 /* WL_REG_ON */
-			>;
-		};
-		
-		pingctrl_reg_bt_en: regbtengrp {
-			fsl,pins = <
-				MX6QDL_PAD_NANDF_D4__GPIO2_IO04		0x02060 /* BT_REG_ON */
 			>;
 		};
 		
