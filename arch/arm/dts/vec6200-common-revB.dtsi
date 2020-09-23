@@ -478,36 +478,27 @@
 			value = <0>;
 		};
 	};
-	
-	sound {
+
+	sound1 {
 		compatible = "simple-audio-card";
-		simple-audio-card,name = "vec6200 audio";
+		simple-audio-card,name = "vec6200_audio1";
+		simple-audio-card,format = "i2s";
+		simple-audio-card,bitclock-master = <&dailink1_master>;
+		simple-audio-card,frame-master = <&dailink1_master>;
+		simple-audio-card,widgets =
+			"Microphone", "Mic Jack",
+			"Line", "Line Out Jack",
+			"Line", "Line In Jack";
 		simple-audio-card,routing =
 			"MIC_IN", "Mic Jack",
 			"Mic Jack", "Mic Bias",
 			"Line Out Jack", "LINE_OUT",
 			"LINE_IN", "Line In Jack";
-			
-		simple-audio-card,dai-link@0 {
-			reg = <0>;
-			format = "i2s";
-			cpu {
-				sound-dai = <&ssi1>;
-			};
-			codec {
-				sound-dai = <&codec1>;
-			};
+		simple-audio-card,cpu {
+			sound-dai = <&ssi1>;
 		};
-		
-		simple-audio-card,dai-link@1 {
-			reg = <1>;
-			format = "i2s";
-			cpu {
-				sound-dai = <&ssi2>;
-			};
-			codec {
-				sound-dai = <&codec2>;
-			};
+		dailink1_master: simple-audio-card,codec {
+			sound-dai = <&codec1>;
 		};
 	};
 
