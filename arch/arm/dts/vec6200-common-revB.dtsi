@@ -174,10 +174,34 @@
 			regulator-name = "wifi";
 			regulator-min-microvolt = <3300000>;
 			regulator-max-microvolt = <3300000>;
-			gpio = <&gpio2 2 GPIO_ACTIVE_HIGH>;
-			enable-active-high;
+			gpio = <&gpio2 2 GPIO_ACTIVE_LOW>;
 		};
 		
+		reg_bt_en: bt_enable {
+			compatible = "regulator-fixed";
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_reg_bt_en>;
+			vin-supply = <&reg_wifi>;
+			regulator-name = "bt_en";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio2 4 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+			startup-delay-us = <1000>;
+		};
+		
+		reg_wifi_en: wifi_enable {
+			compatible = "regulator-fixed";
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_reg_wifi_en>;
+			vin-supply = <&reg_bt_en>;
+			regulator-name = "wifi_en";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio2 3 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+		};
+
 		reg_hdmi: hdmi {
 			compatible = "regulator-fixed";
 			pinctrl-names = "default";
@@ -202,14 +226,7 @@
 			regulator-always-on;
 		};
 	};
-	
-	usdhc4_pwrseq: usdhc4_pwrseq {
-		compatible = "mmc-pwrseq-simple";
-		reset-gpios =
-			<&gpio2 3 GPIO_ACTIVE_LOW>,
-			<&gpio2 4 GPIO_ACTIVE_LOW>;
-	};
-	
+
 	gpio-keys {
 		compatible = "gpio-keys";
 		pinctrl-names = "default";
@@ -1017,6 +1034,8 @@
 };
 
 &usdhc4 {
+	#address-cells = <1>;
+	#size-cells = <0>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc4>;
 	bus-width = <4>;
@@ -1024,12 +1043,8 @@
 	no-1-8-v;
 	keep-power-in-suspend;
 	cap-power-off-card;
-	max-frequency = <25000000>;
-	#address-cells = <1>;
-	#size-cells = <0>;
 	status = "okay";
-	vmmc-supply = <&reg_wifi>;
-	mmc-pwrseq = <&usdhc4_pwrseq>;
+	vmmc-supply = <&reg_wifi_en>;
 	
 	wifi: wifi@1 {
 		compatible = "marvell,sd8997";
@@ -1338,8 +1353,6 @@
 				MX6QDL_PAD_SD4_DAT1__SD4_DATA1	0x17059
 				MX6QDL_PAD_SD4_DAT2__SD4_DATA2	0x17059
 				MX6QDL_PAD_SD4_DAT3__SD4_DATA3	0x17059
-				MX6QDL_PAD_NANDF_D3__GPIO2_IO03	0x02060 /* WL_REG_ON */
-				MX6QDL_PAD_NANDF_D4__GPIO2_IO04	0x02060 /* BT_REG_ON */
 			>;
 		};
 		
@@ -1389,37 +1402,49 @@
 				MX6QDL_PAD_EIM_D30__GPIO3_IO30		0x2060 /* USB_OTG_PWR_EN */
 			>;
 		};
-		
+
 		pinctrl_reg_modem: regmodemgrp {
 			fsl,pins = <
 				MX6QDL_PAD_CSI0_DAT12__GPIO5_IO30	0x02060 /* GP-PCIE_PWR_nEN */
 			>;
 		};
-		
+
 		pinctrl_reg_gps: reggpsgrp {
 			fsl,pins = <
 				MX6QDL_PAD_NANDF_D1__GPIO2_IO01		0x2060 /* GPS_PW_EN */
 			>;
 		};
-		
+
 		pinctrl_reg_codec1: regcodec1grp {
 			fsl,pins = <
 				MX6QDL_PAD_NANDF_CS1__GPIO6_IO14 	0x2060 /* CODEC_EN */
 			>;
 		};
-		
+
 		pinctrl_reg_codec2: regcodec2grp {
 			fsl,pins = <
 				MX6QDL_PAD_NANDF_WP_B__GPIO6_IO09 	0x2060 /* CODEC-B_EN */
 			>;
 		};
-		
+
 		pinctrl_reg_wifi:  regwifigrp {
 			fsl,pins = <
 				MX6QDL_PAD_NANDF_D2__GPIO2_IO02		0x2060 /* GP-WIFI_PWR_nEN */
 			>;
 		};
-		
+
+		pinctrl_reg_wifi_en: regwifiengrp {
+			fsl,pins = <
+				MX6QDL_PAD_NANDF_D3__GPIO2_IO03	0x02060 /* WL_REG_ON */
+			>;
+		};
+
+		pinctrl_reg_bt_en: regwifibtgrp {
+			fsl,pins = <
+				MX6QDL_PAD_NANDF_D4__GPIO2_IO04	0x02060 /* BT_REG_ON */
+			>;
+		};
+
 		pinctrl_reg_hdmi: reghdmigrp {
 			fsl,pins = <
 				MX6QDL_PAD_NANDF_CS0__GPIO6_IO11	0x2060 /* HDMIT_EN */
@@ -1431,21 +1456,21 @@
 				MX6QDL_PAD_NANDF_CS3__GPIO6_IO16	0x02060 /* GP-EN_PWR--ANT_GPS */
 			>;
 		};
-		
+
 		pinctrl_flexcan1: flexcan1grp {
 			fsl,pins = <
 				MX6QDL_PAD_GPIO_7__FLEXCAN1_TX		0x1b0b1
 				MX6QDL_PAD_GPIO_8__FLEXCAN1_RX		0X1b0b1
 			>;
 		};	
-		
+
 		pinctrl_flexcan2: flexcan2grp {
 			fsl,pins = <
 				MX6QDL_PAD_KEY_COL4__FLEXCAN2_TX	0x1b0b1
 				MX6QDL_PAD_KEY_ROW4__FLEXCAN2_RX	0X1b0b1
 			>;
 		};		
-		
+
 		pinctrl_hdmi: hdmigrp {
 			fsl,pins = <
 				MX6QDL_PAD_KEY_ROW3__HDMI_TX_DDC_SDA	0x4001b8b1
