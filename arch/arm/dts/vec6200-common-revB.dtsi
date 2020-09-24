@@ -501,6 +501,31 @@
 			sound-dai = <&codec1>;
 		};
 	};
+	
+#if 0
+	// RevB has IOVOLTAGE 3V3 but MCLK is 1V8.
+	// This audio card will never work.
+	sound2 {
+		compatible = "simple-audio-card";
+		simple-audio-card,name = "vec6200_audio2";
+		simple-audio-card,format = "i2s";
+		simple-audio-card,bitclock-master = <&dailink2_master>;
+		simple-audio-card,frame-master = <&dailink2_master>;
+		simple-audio-card,widgets =
+			"Microphone", "Mic Jack",
+			"Line", "Line Out Jack";
+		simple-audio-card,routing =
+			"MIC_IN", "Mic Jack",
+			"Mic Jack", "Mic Bias",
+			"Line Out Jack", "LINE_OUT";
+		simple-audio-card,cpu {
+			sound-dai = <&ssi2>;
+		};
+		dailink2_master: simple-audio-card,codec {
+			sound-dai = <&codec2>;
+		};
+	};
+#endif
 
 #if 0
 	ch7036-lvds0 {
@@ -731,7 +756,7 @@
 		VDDIO-supply = <&reg_3v3_io>;
 		VDDD-supply = <&reg_codec1>;
 	};
-	
+#if 0
 	codec2: sgtl5000@2a {
 		compatible = "fsl,sgtl5000";
 		reg = <0x2a>;
@@ -743,7 +768,8 @@
 		VDDIO-supply = <&reg_3v3_io>;
 		VDDD-supply = <&reg_codec2>;
 	};
-	
+#endif
+
 	//FIXME: CH7036
 };
 
@@ -1033,7 +1059,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_audmux>;
 	status = "okay";
-	
+
 	ssi1 {
 		fsl,audmux-port = <MX31_AUDMUX_PORT1_SSI0>;
 		fsl,port-config = <
