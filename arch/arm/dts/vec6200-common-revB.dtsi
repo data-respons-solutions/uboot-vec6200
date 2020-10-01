@@ -581,6 +581,58 @@
 		};
 	};
 #endif
+	
+	ani1-voltage {
+		compatible = "voltage-divider";
+		io-channels = <&adc 2>;
+		output-ohms = <47>;
+		full-ohms = <793>;
+	};
+	
+	ani2-voltage {
+		compatible = "voltage-divider";
+		io-channels = <&adc 3>;
+		output-ohms = <47>;
+		full-ohms = <793>;
+	};
+	
+	ani3-voltage {
+		compatible = "voltage-divider";
+		io-channels = <&adc 6>;
+		output-ohms = <47>;
+		full-ohms = <793>;
+	};
+	
+	ani4-voltage {
+		compatible = "voltage-divider";
+		io-channels = <&adc 7>;
+		output-ohms = <47>;
+		full-ohms = <793>;
+	};
+
+	ani1-current {
+		compatible = "current-sense-shunt";
+		io-channels = <&adc 0>;
+		shunt-resistor-micro-ohms = <100000000>;
+	};
+	
+	ani2-current {
+		compatible = "current-sense-shunt";
+		io-channels = <&adc 1>;
+		shunt-resistor-micro-ohms = <100000000>;
+	};
+	
+	ani3-current {
+		compatible = "current-sense-shunt";
+		io-channels = <&adc 4>;
+		shunt-resistor-micro-ohms = <100000000>;
+	};
+	
+	ani4-current {
+		compatible = "current-sense-shunt";
+		io-channels = <&adc 5>;
+		shunt-resistor-micro-ohms = <100000000>;
+	};
 };
 
 &gpio1 {
@@ -890,6 +942,7 @@
 		compatible = "microchip,mcp3208";
 		spi-max-frequency = <1000000>;
 		vref-supply = <&reg_adc_vref>;
+		#io-channel-cells = <1>;
 	};
 };
 
