@@ -1051,6 +1051,10 @@
 	pinctrl-0 = <&pinctrl_uart5>;
 	uart-has-rtscts;
 	status = "okay";
+	
+	bluetooth {
+		compatible = "mrvl,88w8897";
+	};
 };
 
 &can1 {
