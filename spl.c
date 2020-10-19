@@ -54,36 +54,37 @@ int board_spi_cs_gpio(unsigned bus, unsigned cs)
 #define MX6DQ_DDRPKE_DISABLED 0x00000000
 #define MX6DQ_DS_48_OHM 0x00000028
 #define MX6DQ_DS_40_OHM 0x00000030
+#define MX6DQ_DS_34_OHM 0x00000038
 #define MX6DQ_DS_GRP 0x00000000
 #define MX6DQ_INPUT_DIFFERENTIAL 0x00020000
 
 static const struct mx6dq_iomux_ddr_regs mx6dq_ddr_ioregs = {
-	.dram_sdclk_0 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_40_OHM,
-	.dram_sdclk_1 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_40_OHM,
-	.dram_cas = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_40_OHM,
-	.dram_ras = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_40_OHM,
-	.dram_reset = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_40_OHM,
+	.dram_sdclk_0 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_34_OHM,
+	.dram_sdclk_1 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_34_OHM,
+	.dram_cas = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_34_OHM,
+	.dram_ras = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_34_OHM,
+	.dram_reset = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_34_OHM,
 	.dram_sdba2 = MX6DQ_DS_GRP,
 	.dram_sdcke0 = 0x00003000, // reserved bits
 	.dram_sdcke1 = 0x00003000, // reserved bits
-	.dram_sdodt0 = 0x00003000 | MX6DQ_DS_40_OHM,
-	.dram_sdodt1 = 0x00003000 | MX6DQ_DS_40_OHM,
-	.dram_sdqs0 = MX6DQ_DS_40_OHM,
-	.dram_sdqs1 = MX6DQ_DS_40_OHM,
-	.dram_sdqs2 = MX6DQ_DS_40_OHM,
-	.dram_sdqs3 = MX6DQ_DS_40_OHM,
-	.dram_sdqs4 = MX6DQ_DS_40_OHM,
-	.dram_sdqs5 = MX6DQ_DS_40_OHM,
-	.dram_sdqs6 = MX6DQ_DS_40_OHM,
-	.dram_sdqs7 = MX6DQ_DS_40_OHM,
-	.dram_dqm0 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_40_OHM,
-	.dram_dqm1 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_40_OHM,
-	.dram_dqm2 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_40_OHM,
-	.dram_dqm3 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_40_OHM,
-	.dram_dqm4 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_40_OHM,
-	.dram_dqm5 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_40_OHM,
-	.dram_dqm6 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_40_OHM,
-	.dram_dqm7 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_40_OHM,
+	.dram_sdodt0 = 0x00003000 | MX6DQ_DS_34_OHM,
+	.dram_sdodt1 = 0x00003000 | MX6DQ_DS_34_OHM,
+	.dram_sdqs0 = MX6DQ_DS_34_OHM,
+	.dram_sdqs1 = MX6DQ_DS_34_OHM,
+	.dram_sdqs2 = MX6DQ_DS_34_OHM,
+	.dram_sdqs3 = MX6DQ_DS_34_OHM,
+	.dram_sdqs4 = MX6DQ_DS_34_OHM,
+	.dram_sdqs5 = MX6DQ_DS_34_OHM,
+	.dram_sdqs6 = MX6DQ_DS_34_OHM,
+	.dram_sdqs7 = MX6DQ_DS_34_OHM,
+	.dram_dqm0 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_34_OHM,
+	.dram_dqm1 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_34_OHM,
+	.dram_dqm2 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_34_OHM,
+	.dram_dqm3 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_34_OHM,
+	.dram_dqm4 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_34_OHM,
+	.dram_dqm5 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_34_OHM,
+	.dram_dqm6 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_34_OHM,
+	.dram_dqm7 = MX6DQ_INPUT_DIFFERENTIAL | MX6DQ_DS_34_OHM,
 };
 
 static const struct mx6sdl_iomux_ddr_regs mx6sdl_ddr_ioregs = {
@@ -118,18 +119,18 @@ static const struct mx6sdl_iomux_ddr_regs mx6sdl_ddr_ioregs = {
 static const struct mx6dq_iomux_grp_regs mx6dq_grp_ioregs = {
 	.grp_ddr_type = MX6DQ_DDR_TYPE_DD3,
 	.grp_ddrpke = MX6DQ_DDRPKE_DISABLED,
-	.grp_addds = MX6DQ_DS_40_OHM,
-	.grp_ctlds = MX6DQ_DS_40_OHM,
+	.grp_addds = MX6DQ_DS_34_OHM,
+	.grp_ctlds = MX6DQ_DS_34_OHM,
 	.grp_ddrmode_ctl = MX6DQ_INPUT_DIFFERENTIAL,
 	.grp_ddrmode = MX6DQ_INPUT_DIFFERENTIAL,
-	.grp_b0ds = MX6DQ_DS_40_OHM,
-	.grp_b1ds = MX6DQ_DS_40_OHM,
-	.grp_b2ds = MX6DQ_DS_40_OHM,
-	.grp_b3ds = MX6DQ_DS_40_OHM,
-	.grp_b4ds = MX6DQ_DS_40_OHM,
-	.grp_b5ds = MX6DQ_DS_40_OHM,
-	.grp_b6ds = MX6DQ_DS_40_OHM,
-	.grp_b7ds = MX6DQ_DS_40_OHM,
+	.grp_b0ds = MX6DQ_DS_34_OHM,
+	.grp_b1ds = MX6DQ_DS_34_OHM,
+	.grp_b2ds = MX6DQ_DS_34_OHM,
+	.grp_b3ds = MX6DQ_DS_34_OHM,
+	.grp_b4ds = MX6DQ_DS_34_OHM,
+	.grp_b5ds = MX6DQ_DS_34_OHM,
+	.grp_b6ds = MX6DQ_DS_34_OHM,
+	.grp_b7ds = MX6DQ_DS_34_OHM,
 };
 
 static const struct mx6sdl_iomux_grp_regs mx6sdl_grp_ioregs = {
@@ -149,20 +150,19 @@ static const struct mx6sdl_iomux_grp_regs mx6sdl_grp_ioregs = {
 	.grp_b7ds = MX6DQ_DS_40_OHM,
 };
 
-// FIXME: CALIBRATE Dual/Quad
-static const struct mx6_mmdc_calibration mx6dq_calib_MT41K256M16TW_107 = {
-	.p0_mpwldectrl0 =  0x001E001D,
-	.p0_mpwldectrl1 =  0x001E0019,
-	.p1_mpwldectrl0 =  0x000F0024,
-	.p1_mpwldectrl1 =  0x000D001F,
-	.p0_mpdgctrl0 =  0x03100324,
-	.p0_mpdgctrl1 =  0x030C0304,
-	.p1_mpdgctrl0 =  0x03100320,
-	.p1_mpdgctrl1 =  0x030C0258,
-	.p0_mprddlctl =  0x4A3A4244,
-	.p1_mprddlctl =  0x3E3E364C,
-	.p0_mpwrdlctl =  0x3A3E4440,
-	.p1_mpwrdlctl =  0x4432463A,
+static const struct mx6_mmdc_calibration mx6dq_calib_B5116ECMDXGJDI = {
+	.p0_mpwldectrl0 =  0x0030002A,
+	.p0_mpwldectrl1 =  0x002E0028,
+	.p1_mpwldectrl0 =  0x0022002E,
+	.p1_mpwldectrl1 =  0x00220030,
+	.p0_mpdgctrl0 =  0x031C0330,
+	.p0_mpdgctrl1 =  0x03200318,
+	.p1_mpdgctrl0 =  0x03380348,
+	.p1_mpdgctrl1 =  0x03280274,
+	.p0_mprddlctl =  0x40363A3A,
+	.p1_mprddlctl =  0x3C3E3644,
+	.p0_mpwrdlctl =  0x32303838,
+	.p1_mpwrdlctl =  0x462E4440,
 };
 
 static const struct mx6_mmdc_calibration mx6sdl_calib_MT41K256M16TW_107 = {
@@ -191,7 +191,21 @@ static const struct mx6_ddr3_cfg mem_ddr_MT41K256M16TW_107 = {
 	.trcd = 1375,
 	.trcmin = 3900,
 	.trasmin = 2800,
-	/*.SRT = 1,*/
+	.SRT = 1,
+};
+
+static const struct mx6_ddr3_cfg mem_ddr_B5116ECMDXGJDI = {
+	.mem_speed = 1600,
+	.density = 8,
+	.width = 16,
+	.banks = 8,
+	.rowaddr = 16,
+	.coladdr = 10,
+	.pagesz = 2,
+	.trcd = 1313,
+	.trcmin = 4875,
+	.trasmin = 3500,
+	.SRT = 1,
 };
 
 static struct mx6_ddr_sysinfo sysinfo = {
@@ -240,7 +254,7 @@ static void spl_dram_init(void)
 	}
 	else {
 		mx6dq_dram_iocfg(64, &mx6dq_ddr_ioregs, &mx6dq_grp_ioregs);
-		mx6_dram_cfg(&sysinfo, &mx6dq_calib_MT41K256M16TW_107, &mem_ddr_MT41K256M16TW_107);
+		mx6_dram_cfg(&sysinfo, &mx6dq_calib_B5116ECMDXGJDI, &mem_ddr_B5116ECMDXGJDI);
 	}
 }
 
